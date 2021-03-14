@@ -52,6 +52,9 @@ public class BallScript : MonoBehaviour
     private GameObject bricks;
     private Tilemap bricksTilemap;
 
+    private GameObject specialBricks;
+    private Tilemap specialBricksTilemap;
+
     // states
 
     private BallStateBase currentState;
@@ -75,6 +78,9 @@ public class BallScript : MonoBehaviour
 
         bricks = GameObject.Find("Bricks");
         bricksTilemap = bricks.GetComponent<Tilemap>();
+
+        specialBricks = GameObject.Find("SpecialBricks");
+        specialBricksTilemap = specialBricks.GetComponent<Tilemap>();
 
         stateAim = new BallStateAim();
         stateMove = new BallStateMove();
@@ -110,6 +116,7 @@ public class BallScript : MonoBehaviour
         // https://github.com/Unity-Technologies/2d-techdemos/blob/master/Assets/Tilemap/Brick/Scripts/Ball.cs
 
         Vector3 hitPosition = Vector3.zero;
+
         if (bricksTilemap != null && bricks == collision.gameObject)
         {
             foreach (ContactPoint2D hit in collision.contacts)
@@ -117,6 +124,33 @@ public class BallScript : MonoBehaviour
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 bricksTilemap.SetTile(bricksTilemap.WorldToCell(hitPosition), null);
+            }
+        }
+
+        // collision with special bricks
+
+        if (specialBricksTilemap != null && specialBricks == collision.gameObject)
+        {
+            foreach (ContactPoint2D hit in collision.contacts)
+            {
+                hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
+                hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
+                specialBricksTilemap.SetTile(specialBricksTilemap.WorldToCell(hitPosition), null);
+
+                // add a ball
+
+                List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
+                for (int i = 0; i < bp.Count; i++)
+                {
+                    if (!bp[i].activeSelf)
+                    {
+                        bp[i].SetActive(true);
+                        bp[i].transform.position = hitPosition;
+                        BallScript bs = bp[i].GetComponent<BallScript>();
+                        bs.ChangeState(bs.stateMove);
+                        break;
+                    }
+                }
             }
         }
     }

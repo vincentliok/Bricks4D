@@ -19,7 +19,24 @@ public class BallStateMove : BallStateBase
             ball.transform.position.x < -ball.bounds ||
             ball.transform.position.y < -ball.bounds)
         {
-            ball.ChangeState(ball.stateAim);
+            ball.gameObject.SetActive(false);
+
+            List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
+            bool foundActive = false;
+            for (int i = 0; i < bp.Count; i++)
+            {
+                if (bp[i].activeSelf)
+                {
+                    foundActive = true;
+                    break;
+                }
+            }
+
+            if (!foundActive)
+            {
+                ball.gameObject.SetActive(true);
+                ball.ChangeState(ball.stateAim);
+            }
         }
     }
     public override void LeaveState(BallScript ball)
