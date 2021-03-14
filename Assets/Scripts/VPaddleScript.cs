@@ -8,10 +8,7 @@ public class VPaddleScript : MonoBehaviour
     private float speed = 5.0f;
 
     [SerializeField]
-    private float topBound = 3.6f;
-
-    [SerializeField]
-    private float bottomBound = -3.6f;
+    private float bounds = 3.6f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,16 +35,16 @@ public class VPaddleScript : MonoBehaviour
 
         // stay within top bound
 
-        if (transform.position.y > topBound)
+        if (transform.position.y > bounds)
         {
-            transform.position = new Vector2(transform.position.x, topBound);
+            transform.position = new Vector2(transform.position.x, bounds);
         }
 
         // stay within bottom bound
 
-        if (transform.position.y < bottomBound)
+        if (transform.position.y < -bounds)
         {
-            transform.position = new Vector2(transform.position.x, bottomBound);
+            transform.position = new Vector2(transform.position.x, -bounds);
         }
     }
 }

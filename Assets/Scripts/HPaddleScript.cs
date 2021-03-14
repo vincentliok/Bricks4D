@@ -8,10 +8,7 @@ public class HPaddleScript : MonoBehaviour
     private float speed = 5.0f;
 
     [SerializeField]
-    private float leftBound = -3.6f;
-
-    [SerializeField]
-    private float rightBound = 3.6f;
+    private float bounds = 3.6f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,16 +35,16 @@ public class HPaddleScript : MonoBehaviour
 
         // stay within left bound
 
-        if (transform.position.x < leftBound)
+        if (transform.position.x < -bounds)
         {
-            transform.position = new Vector2(leftBound, transform.position.y);
+            transform.position = new Vector2(-bounds, transform.position.y);
         }
 
         // stay within right bound
 
-        if (transform.position.x > rightBound)
+        if (transform.position.x > bounds)
         {
-            transform.position = new Vector2(rightBound, transform.position.y);
+            transform.position = new Vector2(bounds, transform.position.y);
         }
 
     }
