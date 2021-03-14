@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class BallScript : MonoBehaviour
 {
@@ -55,6 +56,9 @@ public class BallScript : MonoBehaviour
     private GameObject specialBricks;
     private Tilemap specialBricksTilemap;
 
+    [System.NonSerialized]
+    public GameManagerScript gms;
+
     // states
 
     private BallStateBase currentState;
@@ -81,6 +85,8 @@ public class BallScript : MonoBehaviour
 
         specialBricks = GameObject.Find("SpecialBricks");
         specialBricksTilemap = specialBricks.GetComponent<Tilemap>();
+
+        gms = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
 
         stateAim = new BallStateAim();
         stateMove = new BallStateMove();
@@ -124,6 +130,13 @@ public class BallScript : MonoBehaviour
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 bricksTilemap.SetTile(bricksTilemap.WorldToCell(hitPosition), null);
+
+                gms.UpdateScore();
+
+                if (bricksTilemap.GetUsedTilesCount() == 0 && specialBricksTilemap.GetUsedTilesCount() == 0)
+                {
+                    SceneManager.LoadScene("End");
+                }
             }
         }
 
@@ -137,9 +150,16 @@ public class BallScript : MonoBehaviour
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 specialBricksTilemap.SetTile(specialBricksTilemap.WorldToCell(hitPosition), null);
 
+                gms.UpdateScore();
+
+                if (bricksTilemap.GetUsedTilesCount() == 0 && specialBricksTilemap.GetUsedTilesCount() == 0)
+                {
+                    SceneManager.LoadScene("End");
+                }
+
                 // to spawn another ball, find an inactive ball in ball pool and set it to active
 
-                List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
+                List<GameObject> bp = gms.ballPool;
                 for (int i = 0; i < bp.Count; i++)
                 {
                     if (!bp[i].activeSelf)

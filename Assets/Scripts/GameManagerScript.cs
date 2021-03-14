@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -12,6 +14,16 @@ public class GameManagerScript : MonoBehaviour
 
     [SerializeField]
     private int poolSize;
+
+    [SerializeField]
+    private int lives = 3;
+
+    private Text livesText;
+
+    [SerializeField]
+    private int brickPoints = 10;
+
+    private Text scoreText;
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +38,35 @@ public class GameManagerScript : MonoBehaviour
         }
 
         ballPool[0].SetActive(true);
+
+        livesText = GameObject.Find("LivesText").GetComponent<Text>();
+        livesText.text = "Lives: " + lives;
+
+        Data.score = 0;
+        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+        scoreText.text = "Score: " + Data.score;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void UpdateLives(int changeInLives)
+    {
+        if (lives <= 1)
+        {
+            SceneManager.LoadScene("End");
+        }
+
+        lives += changeInLives;
+        livesText.text = "Lives: " + lives;
+    }
+
+    public void UpdateScore()
+    {
+        Data.score += brickPoints;
+        scoreText.text = "Score: " + Data.score;
     }
 }

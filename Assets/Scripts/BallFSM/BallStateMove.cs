@@ -25,7 +25,7 @@ public class BallStateMove : BallStateBase
 
             // see if there is another active ball in the scene
 
-            List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
+            List<GameObject> bp = ball.gms.ballPool;
             bool foundActive = false;
             for (int i = 0; i < bp.Count; i++)
             {
@@ -42,6 +42,8 @@ public class BallStateMove : BallStateBase
             {
                 ball.gameObject.SetActive(true);
                 ball.ChangeState(ball.stateAim);
+
+                ball.gms.UpdateLives(-1);
             }
         }
     }
