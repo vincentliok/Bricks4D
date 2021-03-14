@@ -19,7 +19,11 @@ public class BallStateMove : BallStateBase
             ball.transform.position.x < -ball.bounds ||
             ball.transform.position.y < -ball.bounds)
         {
+            // destroy the ball by setting it to inactive
+
             ball.gameObject.SetActive(false);
+
+            // see if there is another active ball in the scene
 
             List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
             bool foundActive = false;
@@ -31,6 +35,8 @@ public class BallStateMove : BallStateBase
                     break;
                 }
             }
+
+            // if active ball not found, set self to active again and change state
 
             if (!foundActive)
             {

@@ -137,7 +137,7 @@ public class BallScript : MonoBehaviour
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 specialBricksTilemap.SetTile(specialBricksTilemap.WorldToCell(hitPosition), null);
 
-                // add a ball
+                // to spawn another ball, find an inactive ball in ball pool and set it to active
 
                 List<GameObject> bp = GameObject.Find("GameManager").GetComponent<GameManagerScript>().ballPool;
                 for (int i = 0; i < bp.Count; i++)
