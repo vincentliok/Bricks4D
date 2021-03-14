@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class BallScript : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class BallScript : MonoBehaviour
         private set;
     }
 
+    private GameObject bricks;
+    private Tilemap bricksTilemap;
+
     // states
 
     private BallStateBase currentState;
@@ -68,6 +72,9 @@ public class BallScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         paddle = GameObject.Find("Ball Position").transform;
+
+        bricks = GameObject.Find("Bricks");
+        bricksTilemap = bricks.GetComponent<Tilemap>();
 
         stateAim = new BallStateAim();
         stateMove = new BallStateMove();
@@ -92,6 +99,24 @@ public class BallScript : MonoBehaviour
         if (currentState != null)
         {
             currentState.EnterState(this);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // collision with bricks
+        // I did not come up with this. Here is the link where I got the code:
+        // https://github.com/Unity-Technologies/2d-techdemos/blob/master/Assets/Tilemap/Brick/Scripts/Ball.cs
+
+        Vector3 hitPosition = Vector3.zero;
+        if (bricksTilemap != null && bricks == collision.gameObject)
+        {
+            foreach (ContactPoint2D hit in collision.contacts)
+            {
+                hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
+                hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
+                bricksTilemap.SetTile(bricksTilemap.WorldToCell(hitPosition), null);
+            }
         }
     }
 }

@@ -10,7 +10,11 @@ public class BallStateAim : BallStateBase
     }
     public override void Update(BallScript ball)
     {
+        // move ball with paddle
+
         ball.transform.position = ball.paddle.position;
+
+        // shoot ball
 
         if (Input.GetKey(KeyCode.Space))
         {
