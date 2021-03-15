@@ -7,7 +7,7 @@ public class ButtonFunctions : MonoBehaviour
 {
     public void play()
     {
-        SceneManager.LoadScene("Level");
+        SceneManager.LoadScene("LevelSelect");
     }
 
     public void menu()
