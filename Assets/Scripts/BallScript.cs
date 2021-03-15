@@ -117,7 +117,7 @@ public class BallScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // collision with bricks
+        // find out which tile was hit
         // I did not come up with this. Here is the link where I got the code:
         // https://github.com/Unity-Technologies/2d-techdemos/blob/master/Assets/Tilemap/Brick/Scripts/Ball.cs
 
@@ -131,7 +131,11 @@ public class BallScript : MonoBehaviour
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 bricksTilemap.SetTile(bricksTilemap.WorldToCell(hitPosition), null);
 
+                // increase score
+
                 gms.UpdateScore();
+
+                // if no more tiles, end
 
                 if (bricksTilemap.GetUsedTilesCount() == 0 && specialBricksTilemap.GetUsedTilesCount() == 0)
                 {
@@ -150,7 +154,11 @@ public class BallScript : MonoBehaviour
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 specialBricksTilemap.SetTile(specialBricksTilemap.WorldToCell(hitPosition), null);
 
+                // increase score
+
                 gms.UpdateScore();
+
+                // if no more tiles, end
 
                 if (bricksTilemap.GetUsedTilesCount() == 0 && specialBricksTilemap.GetUsedTilesCount() == 0)
                 {
@@ -173,5 +181,9 @@ public class BallScript : MonoBehaviour
                 }
             }
         }
+
+        // play sound
+
+        AudioManagerScript.Instance.playboop();
     }
 }

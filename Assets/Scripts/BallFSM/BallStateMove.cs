@@ -43,6 +43,8 @@ public class BallStateMove : BallStateBase
                 ball.gameObject.SetActive(true);
                 ball.ChangeState(ball.stateAim);
 
+                // decrease life
+
                 ball.gms.UpdateLives(-1);
             }
         }

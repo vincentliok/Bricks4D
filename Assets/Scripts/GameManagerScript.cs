@@ -28,6 +28,8 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // setup object pool of balls
+
         ballPool = new List<GameObject>();
         GameObject temp;
         for (int i = 0; i < poolSize; i++)
@@ -47,12 +49,6 @@ public class GameManagerScript : MonoBehaviour
         scoreText.text = "Score: " + Data.score;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void UpdateLives(int changeInLives)
     {
         if (lives <= 1)
@@ -63,6 +59,8 @@ public class GameManagerScript : MonoBehaviour
         lives += changeInLives;
         livesText.text = "Lives: " + lives;
     }
+
+    // change the score in Data
 
     public void UpdateScore()
     {
